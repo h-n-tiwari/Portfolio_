@@ -1,5 +1,5 @@
 {
-  "name": "web3-portfolio-backend",
+  "name": "portfolio-backend",
   "version": "1.0.0",
   "scripts": {
     "dev": "bun --watch src/server.ts",
