@@ -1,25 +1,43 @@
-# Full-Stack Web3 Developer Portfolio
+# My Portfolio Website
 
-A minimal, professional portfolio website built with Next.js, Express, PostgreSQL, and Prisma. Designed for a junior full-stack developer with a focus on Web3 and blockchain technology.
+So this is my personal portfolio site i built using Next.js for the frontend and Express for the backend. I wanted something clean and minimal with a Web3 vibe since thats the space im most interested in. It uses PostgreSQL to store contact form submissions and Prisma as the ORM.
 
-## Tech Stack
+## What i used
 
-| Layer | Technology |
-|---|---|
-| Frontend | Next.js 15 (App Router), React 19, TypeScript 5, Tailwind CSS 3 |
-| Backend | Node.js, Express 4, TypeScript 5 |
-| Database | PostgreSQL, Prisma 5 |
-| Icons | Lucide React |
-| Runtime | Bun |
-| Web3 (skills/projects display) | Solidity, Hardhat, Ethers.js |
+- **Frontend** - Next.js 15 with App Router, React 19, TypeScript, Tailwind CSS
+- **Backend** - Express + TypeScript running on Node.js
+- **Database** - PostgreSQL with Prisma
+- **Runtime** - Bun (way faster than npm honestly)
+- **Web3 stuff** - Solidity, Hardhat, Ethers.js (shown in skills/projects)
 
-## Prerequisites
+## Before you start
 
-- [Bun](https://bun.sh/) v1.0 or later
-- [Node.js](https://nodejs.org/) v18 or later
-- [PostgreSQL](https://www.postgresql.org/) v14 or later
+make sure you have these installed:
 
-## Setup
+- [Bun](https://bun.sh/) v1.0+
+- [Node.js](https://nodejs.org/) v18+
+- [PostgreSQL](https://www.postgresql.org/) v14+
+
+## Project structure
+
+```
+FullStack/
+├── frontend/          # Next.js app
+│   └── src/
+│       ├── app/       # pages, layout, styles
+│       ├── components/# all the sections (Hero, About, Skills, etc)
+│       ├── lib/       # api calls to backend
+│       └── types/     # typescript types
+└── backend/           # Express API
+    └── src/
+        ├── controllers/
+        ├── routes/
+        ├── services/
+        ├── data/      # portfolio.data.ts - edit this to make it yours
+        └── middleware/
+```
+
+## How to run it
 
 ### 1. Clone and install
 
@@ -29,156 +47,165 @@ cd FullStack
 bun install
 ```
 
-### 2. Configure the backend
+### 2. Backend setup
 
 ```bash
 cd backend
 cp .env.example .env
 ```
 
-Edit `backend/.env` and set your PostgreSQL connection string:
+open `backend/.env` and fill in your postgres connection:
 
-```
+```env
 DATABASE_URL=postgresql://USER:PASSWORD@localhost:5432/web3_portfolio
 PORT=7000
 FRONTEND_URL=http://localhost:3000
 NODE_ENV=development
 ```
 
-### 3. Configure the frontend
+### 3. Frontend setup
 
 ```bash
 cd frontend
 cp .env.example .env.local
 ```
 
-Edit `frontend/.env.local`:
+`frontend/.env.local`:
 
-```
+```env
 NEXT_PUBLIC_API_URL=http://localhost:7000/api
 ```
 
-### 4. Set up the database
+### 4. Database
 
 ```bash
-# Create the database
 createdb web3_portfolio
 
-# Generate Prisma client
 cd backend
-bunx prisma generate
-
-# Run migrations
-bunx prisma migrate dev --name init
+bun run db:generate
+bun run db:migrate
 ```
 
-### 5. Start development servers
+### 5. Start it up
 
-In one terminal:
+open two terminals:
 
+**terminal 1 (backend):**
 ```bash
 cd backend
 bun run dev
 ```
 
-In another terminal:
-
+**terminal 2 (frontend):**
 ```bash
 cd frontend
 bun run dev
 ```
 
-The frontend is available at http://localhost:3000 and the backend API at http://localhost:7000/api.
+frontend runs on http://localhost:3000 and the api on http://localhost:7000/api
 
-## API Endpoints
+## Scripts
+
+**from the root:**
+
+| Command | What it does |
+|---|---|
+| `bun run dev:frontend` | starts the Next.js dev server |
+| `bun run dev:backend` | starts the Express dev server |
+| `bun run build:frontend` | builds frontend for production |
+| `bun run build:backend` | compiles backend TypeScript |
+| `bun run install:all` | installs everything |
+
+**backend:**
+
+| Command | What it does |
+|---|---|
+| `bun run dev` | starts with file watching |
+| `bun run build` | compiles to dist/ |
+| `bun run start` | runs the compiled build |
+| `bun run db:generate` | generates prisma client |
+| `bun run db:migrate` | runs migrations |
+| `bun run db:push` | pushes schema without a migration |
+
+**frontend:**
+
+| Command | What it does |
+|---|---|
+| `bun run dev` | starts Next.js with Turbopack |
+| `bun run build` | production build |
+| `bun run start` | starts production server |
+| `bun run lint` | runs eslint |
+| `bun run type-check` | ts check without building |
+
+## API
 
 | Method | Endpoint | Description |
 |---|---|---|
-| GET | /api/health | API health check |
-| GET | /api/portfolio | Portfolio information |
-| GET | /api/portfolio/projects | Project list |
-| GET | /api/portfolio/skills | Skills list |
-| POST | /api/contact | Submit a contact message |
+| GET | /api/health | check if backend is running |
+| GET | /api/portfolio | gets all portfolio info |
+| GET | /api/portfolio/projects | gets projects |
+| GET | /api/portfolio/skills | gets skills |
+| POST | /api/contact | submit a contact message |
 
-### POST /api/contact
-
-Request body:
+contact form payload:
 
 ```json
 {
-  "name": "string (2–100 chars)",
-  "email": "string (valid email)",
-  "subject": "string (3–200 chars)",
-  "message": "string (10–5000 chars)"
+  "name": "string (2-100 chars)",
+  "email": "valid email",
+  "subject": "string (3-200 chars)",
+  "message": "string (10-5000 chars)"
 }
 ```
 
-Success response (201):
+## Customizing it for yourself
 
-```json
-{ "message": "Message received. Thank you for reaching out!" }
-```
+everything is in one file - `backend/src/data/portfolio.data.ts`
 
-## Customization
+just edit:
+- `portfolioInfo` - your name, title, bio, github, linkedin, X, email
+- `projects` - your projects with descriptions, tech stack, links
+- `skills` - skills grouped by category with levels
 
-All portfolio content is configured in a single file:
+the frontend pulls all this from the API so you only need to change one place.
 
-```
-frontend/src/data/portfolio.ts
-```
+skill levels i used:
+- `proficient` - use it regularly
+- `learning` - still figuring it out
+- `familiar` - used it before but not all the time
 
-Edit the following exports to personalize the portfolio:
+project status:
+- `completed` - done and working
+- `in-progress` - still building
+- `demo` - just a proof of concept
 
-- `portfolioInfo` — your name, title, tagline, GitHub, LinkedIn, and email
-- `projects` — your project list with name, description, technologies, URLs, and status
-- `skills` — your skills organized by category with proficiency levels
+## Features
 
-The same data structure is mirrored in `backend/src/data/portfolio.data.ts` for the API endpoints.
+- responsive layout (works on mobile, tablet, desktop)
+- fixed navbar with smooth scroll and mobile menu
+- hero section with cta buttons and social links
+- about section
+- skills section with category badges (no fake progress bars lol)
+- projects section loaded from the API
+- contact form with validation on both frontend and backend
+- messages stored in postgres
+- rate limiting on the contact endpoint (5 per 15 min)
+- dark Web3 look with purple/cyan colors
+- accessible markup
 
-### Skill levels
+## TODO / things you still need to do
 
-| Level | Meaning |
-|---|---|
-| `proficient` | Use regularly in projects |
-| `learning` | Actively developing skill |
-| `familiar` | Have used or studied, not daily use |
+1. create the postgres database and run migrations
+2. update `portfolio.data.ts` with your actual info
+3. replace the placeholder social links
+4. replace the placeholder email
+5. set env vars when you deploy
 
-### Project status
+## Security stuff
 
-| Status | Meaning |
-|---|---|
-| `completed` | Finished and working |
-| `in-progress` | Currently being built |
-| `demo` | Proof of concept |
-
-## Implemented Features
-
-- Responsive single-page layout (mobile, tablet, desktop)
-- Fixed navbar with smooth scrolling and mobile menu
-- Hero section with CTA buttons and social links
-- About section with highlights
-- Skills section with categorized skill badges (no fake progress bars)
-- Projects section driven by typed data file
-- Contact form with client-side and server-side validation
-- Contact messages stored in PostgreSQL via Prisma
-- Rate limiting on the contact endpoint (5 requests per 15 minutes)
-- Express backend with CORS, request size limits, and error handling
-- Accessible markup (ARIA labels, roles, keyboard navigation)
-- Dark Web3 aesthetic with purple/cyan accents
-
-## Remaining Manual Steps
-
-1. **Database**: create the PostgreSQL database and run migrations (see Setup above)
-2. **Portfolio data**: update `frontend/src/data/portfolio.ts` and `backend/src/data/portfolio.data.ts` with your real name, links, and projects
-3. **Social links**: replace placeholder GitHub and LinkedIn URLs
-4. **Email**: replace `contact@example.com` with your real email address
-5. **Deployment**: configure environment variables for your production host
-
-## Security Notes
-
-- `DATABASE_URL` and other secrets live in `.env` files that are gitignored
-- The contact endpoint validates and sanitizes all inputs server-side before writing to the database
-- Rate limiting prevents abuse of the contact endpoint
-- The CORS configuration restricts API access to the configured frontend URL
-- No contact messages are exposed through public GET endpoints
-- Request bodies are limited to 10 KB to prevent oversized payloads
+- secrets stay in `.env` files which are gitignored
+- contact form inputs are validated server side before hitting the db
+- rate limiting so nobody spams the contact endpoint
+- CORS only allows the configured frontend url
+- contact messages arent exposed through any public GET endpoint
+- request body capped at 10kb
