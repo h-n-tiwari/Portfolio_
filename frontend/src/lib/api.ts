@@ -1,50 +1,52 @@
-import type { PortfolioInfo, Project, SkillCategory } from "@/types";
+import axios from 'axios';
+import type { PortfolioInfo, Project, SkillCategory } from '@/types';
 
+// The base URL for all API calls
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:7000/api';
 
-async function request<T>(path: string, options?: RequestInit): Promise<T> {
-  const res = await fetch(`${API_BASE}${path}`, {
-    headers: { 'Content-Type': 'application/json' },
-    ...options,
-  });
+// One axios instance used by all functions below
+const api = axios.create({
+  baseURL: API_BASE,
+  headers: { 'Content-Type': 'application/json' },
+});
 
-  const data = await res.json() as unknown;
+// ─── Contact ───────────────────────────────────────────────────────────────
 
-  if (!res.ok) {
-    const errData = data as { error?: string };
-    throw new Error(errData.error ?? `Request failed with status ${res.status}`);
-  }
-
-  return data as T;
-}
-
+// Send the contact form data to the backend
 export async function submitContactForm(payload: {
   name: string;
   email: string;
   subject: string;
   message: string;
 }): Promise<{ message: string }> {
-  return request<{ message: string }>('/contact', {
-    method: 'POST',
-    body: JSON.stringify(payload),
-  });
+  const res = await api.post<{ message: string }>('/contact', payload);
+  return res.data;
 }
 
-export async function fetchHealth(): Promise<{ status: string }> {
-  return request<{ status: string }>('/health');
+// ─── Status ────────────────────────────────────────────────────────────────
+
+// Check if the backend is running
+export async function fetchStatus(): Promise<{ status: string }> {
+  const res = await api.get<{ status: string }>('/health');
+  return res.data;
 }
 
+// ─── Portfolio ─────────────────────────────────────────────────────────────
+
+// Get name, title, tagline, social links, email
 export async function fetchPortfolioInfo(): Promise<PortfolioInfo> {
-  const res = await request<{data: PortfolioInfo }>('/portfolio');
-  return res.data;
+  const res = await api.get<{ data: PortfolioInfo }>('/portfolio');
+  return res.data.data;
 }
 
+// Get the list of projects
 export async function fetchProjects(): Promise<Project[]> {
-  const res = await request<{ data: Project[] }>('/portfolio/projects');
-  return res.data;
+  const res = await api.get<{ data: Project[] }>('/portfolio/projects');
+  return res.data.data;
 }
 
+// Get the skills grouped by category
 export async function fetchSkills(): Promise<SkillCategory> {
-  const res = await request<{ data: SkillCategory }>('/portfolio/skills');
-  return res.data;
+  const res = await api.get<{ data: SkillCategory }>('/portfolio/skills');
+  return res.data.data;
 }
