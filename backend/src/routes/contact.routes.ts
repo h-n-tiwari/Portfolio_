@@ -1,5 +1,5 @@
 import { Router, type IRouter } from 'express';
-import { submitContact } from '../controllers/contact.controller';
+import { submitContact } from '../controllers/contact.controller.js';
 
 export const contactRouter: IRouter = Router();
 

@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
-import { saveContactMessage } from '../services/contact.service';
+import { saveContactMessage } from '../services/contact.service.js';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { portfolioInfo, projects, skills } from '../data/portfolio.data';
+import { portfolioInfo, projects, skills } from '../data/portfolio.data.js';
 
 export function getPortfolio(_req: Request, res: Response): void {
   res.json({ data: portfolioInfo });

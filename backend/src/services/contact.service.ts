@@ -1,4 +1,4 @@
-import { db } from '../prisma/db';
+import { db } from '../prisma/db.js';
 
 export interface ContactInput {
   name: string;

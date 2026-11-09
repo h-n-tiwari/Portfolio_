@@ -1,5 +1,5 @@
 import { Router, type IRouter } from 'express';
-import { getPortfolio, getProjects, getSkills } from '../controllers/portfolio.controller';
+import { getPortfolio, getProjects, getSkills } from '../controllers/portfolio.controller.js';
 
 export const portfolioRouter: IRouter = Router();
 

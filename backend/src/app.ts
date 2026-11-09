@@ -1,10 +1,9 @@
 import express, { type Express } from 'express';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
-import { contactRouter } from './routes/contact.routes';
-import { portfolioRouter } from './routes/portfolio.routes';
-import { errorMiddleware } from './middleware/error.middleware';
-
+import { contactRouter } from './routes/contact.routes.js';
+import { portfolioRouter } from './routes/portfolio.routes.js';
+import { errorMiddleware } from './middleware/error.middleware.js';
 const app: Express = express();
 
 const frontendUrl = process.env.FRONTEND_URL ?? 'http://localhost:3000';

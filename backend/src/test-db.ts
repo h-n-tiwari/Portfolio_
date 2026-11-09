@@ -1,4 +1,4 @@
-import { db } from './prisma/db';
+import { db } from './prisma/db.js';
 
 async function main() {
   const contact = await db.orm.public.ContactMessage.create({
