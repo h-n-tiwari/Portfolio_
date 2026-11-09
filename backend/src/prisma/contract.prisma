@@ -1,0 +1,13 @@
+// use prisma-8
+
+model ContactMessage {
+  id        String   @id @onCreate(cuid(2))
+  name      String(storage: varchar, length: 100)
+  email     String(storage: varchar, length: 254)
+  subject   String(storage: varchar, length: 200)
+  message   String
+  createdAt DateTime @default(now())
+
+  @@index([email])
+  @@index([createdAt])
+}

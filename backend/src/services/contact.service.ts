@@ -1,6 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { db } from '../prisma/db';
 
 export interface ContactInput {
   name: string;
@@ -10,12 +8,10 @@ export interface ContactInput {
 }
 
 export async function saveContactMessage(input: ContactInput) {
-  return prisma.contactMessage.create({
-    data: {
+  return db.orm.public.ContactMessage.create({
       name: input.name.trim(),
       email: input.email.toLowerCase().trim(),
       subject: input.subject.trim(),
       message: input.message.trim(),
-    },
   });
 }

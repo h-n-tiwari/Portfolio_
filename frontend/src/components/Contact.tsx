@@ -12,8 +12,8 @@ export default function Contact() {
 
   // UI state
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
   const [serverError, setServerError] = useState('');
 
   // Simple validation
@@ -26,7 +26,7 @@ export default function Contact() {
     return newErrors;
   }
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
 
     const validationErrors = validate();

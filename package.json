@@ -1,12 +1,12 @@
 {
-  "name": "web3-portfolio",
+  "name": "portfolio",
   "private": true,
-  "workspaces": ["frontend", "backend"],
   "scripts": {
     "dev:frontend": "cd frontend && bun run dev",
     "dev:backend": "cd backend && bun run dev",
     "build:frontend": "cd frontend && bun run build",
     "build:backend": "cd backend && bun run build",
     "install:all": "bun install"
-  }
+  },
+  "workspaces": ["frontend", "backend"]
 }

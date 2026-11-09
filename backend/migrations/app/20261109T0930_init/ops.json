@@ -1,0 +1,164 @@
+[
+  {
+    "id": "schema.public",
+    "label": "Create schema \"public\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres"
+    },
+    "precheck": [],
+    "execute": [
+      {
+        "description": "Create schema \"public\"",
+        "sql": "CREATE SCHEMA IF NOT EXISTS \"public\"",
+        "params": []
+      }
+    ],
+    "postcheck": []
+  },
+  {
+    "id": "table.ContactMessage",
+    "label": "Create table \"ContactMessage\"",
+    "summary": "Creates table \"ContactMessage\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "ContactMessage"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"ContactMessage\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ContactMessage\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "table \"ContactMessage\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"ContactMessage\"",
+        "sql": "CREATE TABLE \"public\".\"ContactMessage\" (\n  \"createdAt\" timestamptz(3) DEFAULT (now()) NOT NULL,\n  \"email\" character varying(254) NOT NULL,\n  \"id\" text NOT NULL,\n  \"message\" text NOT NULL,\n  \"name\" character varying(100) NOT NULL,\n  \"subject\" character varying(200) NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"ContactMessage\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3))) AS \"result\"",
+        "params": [
+          "\"public\".\"ContactMessage\"",
+          "r",
+          "p"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "table \"ContactMessage\""
+        }
+      }
+    ]
+  },
+  {
+    "id": "index.ContactMessage.ContactMessage_createdAt_idx_9575dbd7",
+    "label": "Create index \"ContactMessage_createdAt_idx_9575dbd7\" on \"ContactMessage\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "ContactMessage_createdAt_idx_9575dbd7",
+        "table": "ContactMessage"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"ContactMessage_createdAt_idx_9575dbd7\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ContactMessage_createdAt_idx_9575dbd7\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"ContactMessage_createdAt_idx_9575dbd7\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"ContactMessage_createdAt_idx_9575dbd7\"",
+        "sql": "CREATE INDEX \"ContactMessage_createdAt_idx_9575dbd7\" ON \"public\".\"ContactMessage\" (\"createdAt\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"ContactMessage_createdAt_idx_9575dbd7\" exists on \"ContactMessage\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"ContactMessage_createdAt_idx_9575dbd7\"",
+          "i",
+          "I",
+          "\"public\".\"ContactMessage\"",
+          "btree",
+          "[\"createdAt\"]"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.ContactMessage.ContactMessage_email_idx_46df9cad",
+    "label": "Create index \"ContactMessage_email_idx_46df9cad\" on \"ContactMessage\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "ContactMessage_email_idx_46df9cad",
+        "table": "ContactMessage"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"ContactMessage_email_idx_46df9cad\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ContactMessage_email_idx_46df9cad\""
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"ContactMessage_email_idx_46df9cad\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"ContactMessage_email_idx_46df9cad\"",
+        "sql": "CREATE INDEX \"ContactMessage_email_idx_46df9cad\" ON \"public\".\"ContactMessage\" (\"email\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"ContactMessage_email_idx_46df9cad\" exists on \"ContactMessage\" with the planned definition",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_class\" AS \"c\" INNER JOIN \"pg_index\" AS \"i\" ON \"i\".\"indexrelid\" = \"c\".\"oid\" INNER JOIN \"pg_am\" AS \"m\" ON \"m\".\"oid\" = \"c\".\"relam\" WHERE (\"c\".\"oid\" = to_regclass($1) AND (\"c\".\"relkind\" = $2 OR \"c\".\"relkind\" = $3) AND \"i\".\"indrelid\" = to_regclass($4) AND NOT (\"i\".\"indisunique\") AND \"m\".\"amname\" = $5 AND (\"i\".\"indexprs\" IS NULL AND (SELECT coalesce(jsonb_agg(key_attribute.attname ORDER BY key_column.position), '[]'::jsonb) FROM unnest(\"i\".\"indkey\"::int2[]) WITH ORDINALITY AS key_column(attnum, position) JOIN pg_attribute key_attribute ON key_attribute.attrelid = \"i\".\"indrelid\" AND key_attribute.attnum = key_column.attnum) = ($6)::jsonb) AND \"i\".\"indpred\" IS NULL)) AS \"result\"",
+        "params": [
+          "\"public\".\"ContactMessage_email_idx_46df9cad\"",
+          "i",
+          "I",
+          "\"public\".\"ContactMessage\"",
+          "btree",
+          "[\"email\"]"
+        ]
+      }
+    ]
+  }
+]
