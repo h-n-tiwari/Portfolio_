@@ -26,7 +26,7 @@ export const projects = [
     name: 'Todo List Application',
     description: 'A full-stack CRUD application built with Node.js, Express, PostgreSQL, and Prisma. Clean REST API with a React frontend.',
     technologies: ['TypeScript', 'Node.js', 'Express.js', 'PostgreSQL', 'React'],
-    githubUrl: 'https://github.com/h-n-tiwari/todo-app',
+    githubUrl: 'https://github.com/h-n-tiwari/Todo-application-backend',
     liveUrl: null,
     status: 'completed',
     contractAddress: null,
